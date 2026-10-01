@@ -120,7 +120,7 @@ body::before {
 
 .sidebar {
     min-height: 0;
-    overflow: hidden;
+    overflow-y: auto;
     border-right: 1px solid var(--border);
     background: rgba(10,13,16,.88);
     padding: 24px 18px;
@@ -139,12 +139,35 @@ body::before {
     letter-spacing: 2px;
 }
 
+.sidebar-actions {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
 .count {
     color: #d3d8db;
     border: 1px solid #3e464d;
     padding: 4px 8px;
     font-size: 10px;
     font-weight: 700;
+}
+
+.add-btn {
+    background: #19222b;
+    color: #69b982;
+    border: 1px solid rgba(105,185,130,.4);
+    padding: 4px 10px;
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 1px;
+    cursor: pointer;
+    transition: .2s;
+}
+
+.add-btn:hover {
+    background: #69b982;
+    color: #080a0d;
 }
 
 .filters {
@@ -239,6 +262,7 @@ body::before {
     display: grid;
     grid-template-rows: auto 1fr;
     gap: 20px;
+    overflow-y: auto;
 }
 
 .page-heading {
@@ -313,8 +337,12 @@ body::before {
 }
 
 .priority-box {
-    min-width: 100px;
+    min-width: 140px;
     text-align: right;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    gap: 12px;
 }
 
 .priority-box span {
@@ -328,6 +356,38 @@ body::before {
     display: block;
     margin-top: 5px;
     font-size: 11px;
+}
+
+.action-btns {
+    display: flex;
+    gap: 6px;
+}
+
+.btn-action {
+    background: transparent;
+    border: 1px solid var(--border);
+    color: var(--text);
+    padding: 5px 10px;
+    font-size: 9px;
+    font-weight: 700;
+    letter-spacing: 1px;
+    cursor: pointer;
+    transition: .2s;
+}
+
+.btn-action.edit:hover {
+    background: var(--text);
+    color: var(--bg);
+}
+
+.btn-action.delete {
+    border-color: rgba(184,74,74,.4);
+    color: #d16d6d;
+}
+
+.btn-action.delete:hover {
+    background: var(--red);
+    color: white;
 }
 
 .info-grid {
@@ -412,7 +472,7 @@ body::before {
 .timeline {
     padding: 20px;
     min-height: 0;
-    overflow: hidden;
+    overflow-y: auto;
 }
 
 .panel-title {
@@ -501,11 +561,165 @@ body::before {
     line-height: 1.4;
 }
 
-.empty {
-    color: #69737a;
-    font-size: 10px;
-    line-height: 1.6;
-    padding: 15px 0;
+/* MODAL STYLES (UPDATED FOR SCROLLING) */
+.modal-overlay {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: rgba(4, 6, 8, 0.88);
+    backdrop-filter: blur(8px);
+    z-index: 2000;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+    overflow-y: auto;
+}
+
+.modal-overlay.active {
+    display: flex;
+}
+
+.modal {
+    background: #0f1418;
+    border: 1px solid #3c444a;
+    width: min(750px, 100%);
+    max-height: 85vh;
+    display: flex;
+    flex-direction: column;
+    box-shadow: 0 20px 50px rgba(0,0,0,0.85);
+    margin: auto;
+}
+
+.modal-header {
+    padding: 18px 24px;
+    border-bottom: 1px solid var(--border);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-shrink: 0;
+}
+
+.modal-header h3 {
+    font-family: Rajdhani, sans-serif;
+    font-size: 24px;
+    letter-spacing: 1.5px;
+}
+
+.close-modal {
+    background: transparent;
+    border: none;
+    color: var(--muted);
+    font-size: 20px;
+    cursor: pointer;
+}
+
+.close-modal:hover {
+    color: white;
+}
+
+.modal-body {
+    padding: 24px;
+    overflow-y: auto;
+    flex: 1 1 auto;
+    min-height: 0; /* Enables clean scrolling in flex parent */
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+}
+
+/* Modal Scrollbar Styling */
+.modal-body::-webkit-scrollbar {
+    width: 6px;
+}
+.modal-body::-webkit-scrollbar-track {
+    background: #080a0d;
+}
+.modal-body::-webkit-scrollbar-thumb {
+    background: #3c444a;
+    border-radius: 3px;
+}
+.modal-body::-webkit-scrollbar-thumb:hover {
+    background: #69727a;
+}
+
+.form-group {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+
+.form-group.full {
+    grid-column: 1 / -1;
+}
+
+.form-group label {
+    font-size: 9px;
+    letter-spacing: 1.5px;
+    color: #8f989f;
+    text-transform: uppercase;
+}
+
+.form-group input,
+.form-group select,
+.form-group textarea {
+    background: #080a0d;
+    border: 1px solid var(--border);
+    color: white;
+    padding: 10px;
+    font-family: Inter, sans-serif;
+    font-size: 11px;
+    outline: none;
+}
+
+.form-group input:focus,
+.form-group select:focus,
+.form-group textarea:focus {
+    border-color: #69727a;
+}
+
+.form-group textarea {
+    resize: vertical;
+    min-height: 70px;
+}
+
+.modal-footer {
+    padding: 18px 24px;
+    border-top: 1px solid var(--border);
+    display: flex;
+    justify-content: flex-end;
+    gap: 12px;
+    flex-shrink: 0;
+}
+
+.btn-save {
+    background: white;
+    color: black;
+    border: none;
+    padding: 10px 20px;
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 1px;
+    cursor: pointer;
+}
+
+.btn-cancel {
+    background: transparent;
+    color: var(--muted);
+    border: 1px solid var(--border);
+    padding: 10px 20px;
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 1px;
+    cursor: pointer;
+}
+
+.btn-cancel:hover {
+    color: white;
+}
+
+.field-hint {
+    font-size: 8px;
+    color: #657077;
 }
 
 @media(max-width: 1000px) {
@@ -521,7 +735,7 @@ body::before {
     .topbar { padding: 0 15px; }
     .top-title { display: none; }
     .main { padding: 16px; }
-    .operation-list, .detail-columns, .side, .info-grid { grid-template-columns: 1fr; }
+    .operation-list, .detail-columns, .side, .info-grid, .modal-body { grid-template-columns: 1fr; }
     .page-heading h2 { font-size: 32px; }
 }
 </style>
@@ -546,7 +760,10 @@ body::before {
     <aside class="sidebar">
         <div class="sidebar-heading">
             <h1>OPERATIONS</h1>
-            <span class="count" id="operationCount">03 ACTIVE</span>
+            <div class="sidebar-actions">
+                <button class="add-btn" onclick="openModal('add')">+ NEW</button>
+                <span class="count" id="operationCount">00 ACTIVE</span>
+            </div>
         </div>
 
         <div class="filters">
@@ -569,7 +786,7 @@ body::before {
             <div class="live">● LIVE COMMAND DESK</div>
         </div>
 
-        <div class="detail">
+        <div class="detail" id="detailContainer">
 
             <section class="panel overview">
                 <div class="overview-head">
@@ -580,8 +797,14 @@ body::before {
                     </div>
 
                     <div class="priority-box">
-                        <span>STATUS</span>
-                        <strong id="detailStatus">PRIORITY</strong>
+                        <div>
+                            <span>STATUS</span>
+                            <strong id="detailStatus">PRIORITY</strong>
+                        </div>
+                        <div class="action-btns">
+                            <button class="btn-action edit" onclick="openModal('edit')">EDIT</button>
+                            <button class="btn-action delete" onclick="deleteOperation()">DELETE</button>
+                        </div>
                     </div>
                 </div>
 
@@ -651,24 +874,92 @@ body::before {
     </main>
 </div>
 
+<!-- OPERATION MODAL -->
+<div class="modal-overlay" id="opModal">
+    <div class="modal">
+        <div class="modal-header">
+            <h3 id="modalTitle">MANAGE OPERATION</h3>
+            <button class="close-modal" onclick="closeModal()">✕</button>
+        </div>
+        <form id="opForm" style="display: flex; flex-direction: column; flex: 1; min-height: 0;" onsubmit="saveOperationForm(event)">
+            <div class="modal-body">
+                <div class="form-group">
+                    <label>Operation ID</label>
+                    <input type="text" id="formId" placeholder="e.g. OP-001" required>
+                </div>
+                <div class="form-group">
+                    <label>Operation Name</label>
+                    <input type="text" id="formName" placeholder="e.g. Operation Blackout" required>
+                </div>
+                <div class="form-group full">
+                    <label>Objective</label>
+                    <input type="text" id="formObjective" placeholder="Brief objective statement" required>
+                </div>
+                <div class="form-group">
+                    <label>Status</label>
+                    <select id="formStatus">
+                        <option value="active">Active</option>
+                        <option value="monitoring">Monitoring</option>
+                        <option value="priority">Priority</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>Lead Unit</label>
+                    <input type="text" id="formLead" placeholder="e.g. CA-1" required>
+                </div>
+                <div class="form-group">
+                    <label>Location</label>
+                    <input type="text" id="formLocation" placeholder="e.g. Postal 706" required>
+                </div>
+                <div class="form-group">
+                    <label>Opened Date/Time</label>
+                    <input type="text" id="formOpened" placeholder="01 OCT 2026 • 09:40" required>
+                </div>
+
+                <div class="form-group full">
+                    <label>Persons of Interest <span class="field-hint">(One entry per line)</span></label>
+                    <textarea id="formPeople" placeholder="Subject 01: Identity pending&#10;Subject 02: Identity pending"></textarea>
+                </div>
+
+                <div class="form-group full">
+                    <label>Involved Personnel <span class="field-hint">(One entry per line)</span></label>
+                    <textarea id="formPersonnel" placeholder="CA-1 — Dario Claw&#10;C-1 — Barry Bostick"></textarea>
+                </div>
+
+                <div class="form-group full">
+                    <label>Locations <span class="field-hint">(One entry per line)</span></label>
+                    <textarea id="formLocations" placeholder="Primary: Postal 706&#10;Secondary: Pending"></textarea>
+                </div>
+
+                <div class="form-group full">
+                    <label>Operation Notes <span class="field-hint">(One entry per line)</span></label>
+                    <textarea id="formNotes" placeholder="Priority: Maintain command oversight&#10;Access: STF personnel only"></textarea>
+                </div>
+
+                <div class="form-group full">
+                    <label>Evidence Items <span class="field-hint">(Format each line: Code | Description)</span></label>
+                    <textarea id="formEvidence" placeholder="E-001 | Scene Photograph&#10;E-002 | Recovered Item"></textarea>
+                </div>
+
+                <div class="form-group full">
+                    <label>Timeline Events <span class="field-hint">(Format each line: Time | Description)</span></label>
+                    <textarea id="formTimeline" placeholder="09:40 | Operation opened by CA-1.&#10;10:05 | Personnel assigned."></textarea>
+                </div>
+            </div>
+
+            <div class="modal-footer">
+                <button type="button" class="btn-cancel" onclick="closeModal()">CANCEL</button>
+                <button type="submit" class="btn-save">SAVE OPERATION</button>
+            </div>
+        </form>
+    </div>
+</div>
+
 <script>
-/*
-    STF OPERATION DATABASE
-
-    Replace the example information below with your actual RP operations.
-    Each operation can contain:
-    - people
-    - STF personnel
-    - locations
-    - evidence
-    - notes
-    - timeline events
-*/
-
-const operations = [
+const defaultOperations = [
     {
         id: "OP-001",
-        name: "Swarts Island",
+        name: "Operation Blackout",
         objective: "Active investigation requiring STF command oversight.",
         status: "priority",
         lead: "CA-1",
@@ -685,7 +976,7 @@ const operations = [
             "<b>C-2</b> — Tyler Bishop"
         ],
         locations: [
-            "<b>Primary:</b> ISLAND BEHIND PALETO",
+            "<b>Primary:</b> Postal 706",
             "<b>Secondary:</b> Pending",
             "<b>Evidence:</b> Scene to be secured"
         ],
@@ -707,7 +998,6 @@ const operations = [
             ["10:20", "Investigation remains active."]
         ]
     },
-
     {
         id: "OP-002",
         name: "Operation Watchtower",
@@ -746,7 +1036,6 @@ const operations = [
             ["22:10", "Monitoring status established."]
         ]
     },
-
     {
         id: "OP-003",
         name: "Operation Iron Gate",
@@ -789,15 +1078,31 @@ const operations = [
     }
 ];
 
+let operations = JSON.parse(localStorage.getItem("stf_operations")) || defaultOperations;
+
+function persistOperations() {
+    localStorage.setItem("stf_operations", JSON.stringify(operations));
+}
+
 const list = document.getElementById("operationList");
 const count = document.getElementById("operationCount");
-let selectedOperation = operations[0];
+let selectedOperation = operations[0] || null;
+let editMode = "add";
 
 function renderOperations(filter = "all") {
     const filtered = operations.filter(op => filter === "all" || op.status === filter);
 
+    if (operations.length === 0) {
+        list.innerHTML = `<div class="empty">No operations recorded.</div>`;
+        document.getElementById("detailContainer").style.display = "none";
+        count.textContent = "00 ACTIVE";
+        return;
+    }
+
+    document.getElementById("detailContainer").style.display = "grid";
+
     list.innerHTML = filtered.map(op => `
-        <button class="operation-card ${selectedOperation.id === op.id ? "selected" : ""}" onclick="selectOperation('${op.id}')">
+        <button class="operation-card ${selectedOperation && selectedOperation.id === op.id ? "selected" : ""}" onclick="selectOperation('${op.id}')">
             <div class="op-top">
                 <span class="op-id">${op.id}</span>
                 <span class="status ${op.status}">${op.status.toUpperCase()}</span>
@@ -807,16 +1112,17 @@ function renderOperations(filter = "all") {
         </button>
     `).join("");
 
-    const activeCount = operations.filter(op => op.status === "active").length;
+    const activeCount = operations.filter(op => op.status === "active" || op.status === "priority").length;
     count.textContent = `${activeCount.toString().padStart(2,"0")} ACTIVE`;
 }
 
-function fillList(id, items) {
+function fillList(id, items = []) {
     document.getElementById(id).innerHTML = items.map(item => `<li>${item}</li>`).join("");
 }
 
 function selectOperation(id) {
     selectedOperation = operations.find(op => op.id === id) || operations[0];
+    if (!selectedOperation) return;
 
     document.getElementById("detailId").textContent = selectedOperation.id;
     document.getElementById("detailName").textContent = selectedOperation.name;
@@ -831,26 +1137,135 @@ function selectOperation(id) {
     fillList("locationsList", selectedOperation.locations);
     fillList("notesList", selectedOperation.notes);
 
+    const evidence = selectedOperation.evidence || [];
     document.getElementById("evidenceCount").textContent =
-        `${selectedOperation.evidence.length.toString().padStart(2,"0")} ITEMS`;
+        `${evidence.length.toString().padStart(2,"0")} ITEMS`;
 
     document.getElementById("evidenceGrid").innerHTML =
-        selectedOperation.evidence.map(e => `
+        evidence.map(e => `
             <div class="evidence-item">
                 <strong>${e[0]}</strong>
                 <span>${e[1]}</span>
             </div>
         `).join("");
 
+    const timeline = selectedOperation.timeline || [];
     document.getElementById("timelineList").innerHTML =
-        selectedOperation.timeline.map(e => `
+        timeline.map(e => `
             <li>
                 <time>${e[0]}</time>
                 <p>${e[1]}</p>
             </li>
         `).join("");
 
-    renderOperations(document.querySelector(".filter.active").dataset.filter);
+    const currentFilter = document.querySelector(".filter.active")?.dataset.filter || "all";
+    renderOperations(currentFilter);
+}
+
+function openModal(mode) {
+    editMode = mode;
+    const modal = document.getElementById("opModal");
+    modal.classList.add("active");
+
+    if (mode === "edit" && selectedOperation) {
+        document.getElementById("modalTitle").textContent = "EDIT OPERATION";
+        document.getElementById("formId").value = selectedOperation.id;
+        document.getElementById("formId").disabled = true;
+        document.getElementById("formName").value = selectedOperation.name;
+        document.getElementById("formObjective").value = selectedOperation.objective;
+        document.getElementById("formStatus").value = selectedOperation.status;
+        document.getElementById("formLead").value = selectedOperation.lead;
+        document.getElementById("formLocation").value = selectedOperation.location;
+        document.getElementById("formOpened").value = selectedOperation.opened;
+
+        document.getElementById("formPeople").value = (selectedOperation.people || []).join("\n");
+        document.getElementById("formPersonnel").value = (selectedOperation.personnel || []).join("\n");
+        document.getElementById("formLocations").value = (selectedOperation.locations || []).join("\n");
+        document.getElementById("formNotes").value = (selectedOperation.notes || []).join("\n");
+
+        document.getElementById("formEvidence").value = (selectedOperation.evidence || [])
+            .map(e => `${e[0]} | ${e[1]}`).join("\n");
+
+        document.getElementById("formTimeline").value = (selectedOperation.timeline || [])
+            .map(t => `${t[0]} | ${t[1]}`).join("\n");
+    } else {
+        document.getElementById("modalTitle").textContent = "NEW OPERATION";
+        document.getElementById("opForm").reset();
+        document.getElementById("formId").disabled = false;
+        
+        const now = new Date();
+        const formatted = `${now.getDate().toString().padStart(2,'0')} ${now.toLocaleString('default', { month: 'short' }).toUpperCase()} ${now.getFullYear()} • ${now.getHours().toString().padStart(2,'0')}:${now.getMinutes().toString().padStart(2,'0')}`;
+        document.getElementById("formOpened").value = formatted;
+    }
+}
+
+function closeModal() {
+    document.getElementById("opModal").classList.remove("active");
+}
+
+function saveOperationForm(e) {
+    e.preventDefault();
+
+    const id = document.getElementById("formId").value.trim();
+    const name = document.getElementById("formName").value.trim();
+    const objective = document.getElementById("formObjective").value.trim();
+    const status = document.getElementById("formStatus").value;
+    const lead = document.getElementById("formLead").value.trim();
+    const location = document.getElementById("formLocation").value.trim();
+    const opened = document.getElementById("formOpened").value.trim();
+
+    const parseLines = (text) => text.split("\n").map(s => s.trim()).filter(Boolean);
+    const parsePairs = (text) => text.split("\n").map(line => {
+        const parts = line.split("|").map(p => p.trim());
+        return parts.length >= 2 ? [parts[0], parts.slice(1).join(" | ")] : [parts[0] || "", ""];
+    }).filter(p => p[0] || p[1]);
+
+    const opData = {
+        id,
+        name,
+        objective,
+        status,
+        lead,
+        location,
+        opened,
+        people: parseLines(document.getElementById("formPeople").value),
+        personnel: parseLines(document.getElementById("formPersonnel").value),
+        locations: parseLines(document.getElementById("formLocations").value),
+        notes: parseLines(document.getElementById("formNotes").value),
+        evidence: parsePairs(document.getElementById("formEvidence").value),
+        timeline: parsePairs(document.getElementById("formTimeline").value)
+    };
+
+    if (editMode === "edit") {
+        const index = operations.findIndex(op => op.id === id);
+        if (index !== -1) operations[index] = opData;
+    } else {
+        if (operations.some(op => op.id === id)) {
+            alert("An operation with this ID already exists.");
+            return;
+        }
+        operations.unshift(opData);
+    }
+
+    persistOperations();
+    selectedOperation = opData;
+    closeModal();
+    selectOperation(selectedOperation.id);
+}
+
+function deleteOperation() {
+    if (!selectedOperation) return;
+    
+    if (confirm(`Are you sure you want to delete ${selectedOperation.id} - ${selectedOperation.name}?`)) {
+        operations = operations.filter(op => op.id !== selectedOperation.id);
+        persistOperations();
+        selectedOperation = operations[0] || null;
+        if (selectedOperation) {
+            selectOperation(selectedOperation.id);
+        } else {
+            renderOperations();
+        }
+    }
 }
 
 document.querySelectorAll(".filter").forEach(button => {
@@ -861,7 +1276,11 @@ document.querySelectorAll(".filter").forEach(button => {
     });
 });
 
-selectOperation(selectedOperation.id);
+if (selectedOperation) {
+    selectOperation(selectedOperation.id);
+} else {
+    renderOperations();
+}
 </script>
 
 </body>
