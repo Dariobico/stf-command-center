@@ -1,0 +1,1151 @@
+```html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>STF | Special Task Force</title>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Rajdhani:wght@500;600;700&display=swap" rel="stylesheet">
+
+<style>
+:root {
+    --bg: #080a0d;
+    --bg2: #0d1014;
+    --panel: rgba(18, 22, 27, 0.88);
+    --panel2: #11151a;
+    --border: rgba(255,255,255,0.08);
+    --text: #f2f4f5;
+    --muted: #8f989f;
+    --accent: #bfc4c8;
+    --accent2: #ffffff;
+    --danger: #9f2525;
+    --green: #3e8b61;
+    --shadow: 0 20px 60px rgba(0,0,0,.45);
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    scroll-behavior: smooth;
+}
+
+body {
+    font-family: "Inter", sans-serif;
+    background:
+        radial-gradient(circle at 50% -10%, rgba(255,255,255,.07), transparent 35%),
+        linear-gradient(180deg, #07090b, #0b0e12 45%, #07090b);
+    color: var(--text);
+    overflow-x: hidden;
+}
+
+body::before {
+    content: "";
+    position: fixed;
+    inset: 0;
+    pointer-events: none;
+    opacity: .035;
+    background-image:
+        linear-gradient(rgba(255,255,255,.4) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255,255,255,.4) 1px, transparent 1px);
+    background-size: 45px 45px;
+}
+
+/* NAVIGATION */
+
+nav {
+    position: fixed;
+    top: 0;
+    width: 100%;
+    height: 75px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 6%;
+    background: rgba(7,9,11,.82);
+    backdrop-filter: blur(18px);
+    border-bottom: 1px solid var(--border);
+    z-index: 1000;
+}
+
+.logo {
+    display: flex;
+    align-items: center;
+    gap: 13px;
+    font-family: Rajdhani, sans-serif;
+    font-weight: 700;
+    letter-spacing: 2px;
+    font-size: 22px;
+}
+
+.logo-mark {
+    width: 40px;
+    height: 40px;
+    border: 1px solid #777;
+    display: grid;
+    place-items: center;
+    transform: rotate(45deg);
+}
+
+.logo-mark span {
+    transform: rotate(-45deg);
+    font-weight: 800;
+}
+
+.nav-links {
+    display: flex;
+    gap: 28px;
+    list-style: none;
+}
+
+.nav-links a {
+    color: #aeb5ba;
+    text-decoration: none;
+    font-size: 13px;
+    font-weight: 600;
+    letter-spacing: .8px;
+    text-transform: uppercase;
+    transition: .25s;
+}
+
+.nav-links a:hover {
+    color: white;
+}
+
+/* HERO */
+
+.hero {
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    position: relative;
+    padding: 120px 20px 80px;
+    overflow: hidden;
+}
+
+.hero::after {
+    content: "";
+    position: absolute;
+    width: 650px;
+    height: 650px;
+    border-radius: 50%;
+    border: 1px solid rgba(255,255,255,.04);
+    box-shadow:
+        0 0 0 80px rgba(255,255,255,.015),
+        0 0 0 160px rgba(255,255,255,.01);
+}
+
+.hero-content {
+    position: relative;
+    z-index: 2;
+    max-width: 900px;
+}
+
+.eyebrow {
+    color: #929ba2;
+    font-size: 12px;
+    letter-spacing: 5px;
+    font-weight: 700;
+    margin-bottom: 20px;
+}
+
+.hero h1 {
+    font-family: Rajdhani, sans-serif;
+    font-size: clamp(70px, 13vw, 150px);
+    line-height: .8;
+    letter-spacing: 8px;
+    font-weight: 700;
+}
+
+.hero h1 span {
+    color: #777e84;
+}
+
+.hero-subtitle {
+    margin-top: 30px;
+    color: #a8afb4;
+    font-size: 16px;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+}
+
+.hero-buttons {
+    margin-top: 40px;
+    display: flex;
+    justify-content: center;
+    gap: 15px;
+    flex-wrap: wrap;
+}
+
+.btn {
+    padding: 14px 25px;
+    border: 1px solid #555;
+    color: white;
+    text-decoration: none;
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    transition: .3s;
+}
+
+.btn:hover {
+    background: white;
+    color: black;
+    transform: translateY(-3px);
+}
+
+.btn.primary {
+    background: white;
+    color: black;
+}
+
+/* STATUS */
+
+.status-bar {
+    width: min(850px, 90%);
+    margin: -55px auto 0;
+    position: relative;
+    z-index: 10;
+    background: rgba(15,19,23,.92);
+    border: 1px solid var(--border);
+    backdrop-filter: blur(15px);
+    box-shadow: var(--shadow);
+    display: grid;
+    grid-template-columns: repeat(3,1fr);
+}
+
+.status-item {
+    padding: 20px;
+    text-align: center;
+    border-right: 1px solid var(--border);
+}
+
+.status-item:last-child {
+    border: none;
+}
+
+.status-label {
+    font-size: 10px;
+    letter-spacing: 2px;
+    color: var(--muted);
+    text-transform: uppercase;
+}
+
+.status-value {
+    margin-top: 7px;
+    font-size: 13px;
+    font-weight: 700;
+}
+
+.active {
+    color: #69b982;
+}
+
+/* SECTIONS */
+
+section {
+    padding: 110px 7%;
+    position: relative;
+}
+
+.section-heading {
+    margin-bottom: 55px;
+}
+
+.section-heading small {
+    color: #7d858b;
+    font-size: 11px;
+    letter-spacing: 4px;
+    text-transform: uppercase;
+}
+
+.section-heading h2 {
+    font-family: Rajdhani, sans-serif;
+    font-size: clamp(40px, 5vw, 65px);
+    letter-spacing: 2px;
+    margin-top: 10px;
+}
+
+.section-heading p {
+    color: var(--muted);
+    max-width: 650px;
+    line-height: 1.7;
+    margin-top: 12px;
+}
+
+/* MISSION */
+
+.mission {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 50px;
+    align-items: center;
+}
+
+.mission-text p {
+    color: #a6adb2;
+    line-height: 1.9;
+    margin-bottom: 20px;
+}
+
+.mission-box {
+    padding: 45px;
+    border: 1px solid var(--border);
+    background: linear-gradient(145deg, rgba(255,255,255,.045), rgba(255,255,255,.015));
+    box-shadow: var(--shadow);
+}
+
+.mission-box h3 {
+    font-family: Rajdhani;
+    font-size: 28px;
+    letter-spacing: 2px;
+}
+
+.mission-box p {
+    color: #929ba2;
+    line-height: 1.8;
+    margin-top: 15px;
+}
+
+/* VALUES */
+
+.values {
+    display: grid;
+    grid-template-columns: repeat(4,1fr);
+    gap: 15px;
+}
+
+.value-card {
+    padding: 30px 25px;
+    background: var(--panel);
+    border: 1px solid var(--border);
+    transition: .3s;
+}
+
+.value-card:hover {
+    transform: translateY(-7px);
+    border-color: #777;
+}
+
+.value-number {
+    font-family: Rajdhani;
+    color: #5f666c;
+    font-size: 13px;
+}
+
+.value-card h3 {
+    margin-top: 20px;
+    font-family: Rajdhani;
+    font-size: 23px;
+    letter-spacing: 1px;
+}
+
+.value-card p {
+    color: var(--muted);
+    line-height: 1.7;
+    margin-top: 10px;
+    font-size: 13px;
+}
+
+/* COMMAND */
+
+.command-grid {
+    display: grid;
+    grid-template-columns: repeat(3,1fr);
+    gap: 20px;
+}
+
+.person-card {
+    background: linear-gradient(145deg,#12171c,#0c1014);
+    border: 1px solid var(--border);
+    padding: 28px;
+    position: relative;
+    overflow: hidden;
+    transition: .3s;
+}
+
+.person-card:hover {
+    transform: translateY(-5px);
+    border-color: #737b81;
+}
+
+.person-card::before {
+    content: "STF";
+    position: absolute;
+    right: -15px;
+    top: 10px;
+    font-family: Rajdhani;
+    font-size: 70px;
+    font-weight: 700;
+    color: rgba(255,255,255,.025);
+}
+
+.rank {
+    font-size: 10px;
+    letter-spacing: 2px;
+    color: #8f989f;
+    text-transform: uppercase;
+}
+
+.person-card h3 {
+    font-family: Rajdhani;
+    font-size: 27px;
+    margin-top: 10px;
+}
+
+.callsign {
+    display: inline-block;
+    margin-top: 12px;
+    padding: 6px 10px;
+    border: 1px solid #454c52;
+    font-size: 11px;
+    letter-spacing: 1px;
+    color: #c3c8cb;
+}
+
+.assignment {
+    color: #747d84;
+    font-size: 12px;
+    margin-top: 17px;
+}
+
+/* RANK TABLE */
+
+.rank-table-wrapper {
+    overflow-x: auto;
+    border: 1px solid var(--border);
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    min-width: 700px;
+}
+
+th {
+    background: #151a1f;
+    padding: 18px;
+    text-align: left;
+    font-size: 10px;
+    letter-spacing: 2px;
+    color: #8d969c;
+    text-transform: uppercase;
+}
+
+td {
+    padding: 19px 18px;
+    border-top: 1px solid var(--border);
+    color: #c0c5c8;
+    font-size: 13px;
+}
+
+tr:hover td {
+    background: rgba(255,255,255,.025);
+}
+
+.rank-badge {
+    display: inline-block;
+    border: 1px solid #4c545a;
+    padding: 5px 9px;
+    font-size: 10px;
+    letter-spacing: 1px;
+}
+
+/* DOCTRINE */
+
+.doctrine-grid {
+    display: grid;
+    grid-template-columns: repeat(3,1fr);
+    gap: 18px;
+}
+
+.doctrine-card {
+    border: 1px solid var(--border);
+    padding: 35px;
+    background: var(--panel);
+}
+
+.doctrine-card span {
+    font-family: Rajdhani;
+    color: #666e74;
+    font-size: 30px;
+}
+
+.doctrine-card h3 {
+    margin-top: 15px;
+    font-family: Rajdhani;
+    font-size: 25px;
+}
+
+.doctrine-card p {
+    margin-top: 12px;
+    color: var(--muted);
+    line-height: 1.7;
+    font-size: 13px;
+}
+
+/* TRAINING */
+
+.training-list {
+    max-width: 900px;
+}
+
+.training-item {
+    display: grid;
+    grid-template-columns: 80px 1fr;
+    border-bottom: 1px solid var(--border);
+    padding: 25px 0;
+}
+
+.training-number {
+    font-family: Rajdhani;
+    font-size: 25px;
+    color: #636b71;
+}
+
+.training-item h3 {
+    font-family: Rajdhani;
+    font-size: 23px;
+}
+
+.training-item p {
+    color: var(--muted);
+    font-size: 13px;
+    margin-top: 7px;
+    line-height: 1.6;
+}
+
+/* CONDUCT */
+
+.conduct {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 25px;
+}
+
+.conduct-card {
+    border: 1px solid var(--border);
+    padding: 35px;
+    background: var(--panel);
+}
+
+.conduct-card h3 {
+    font-family: Rajdhani;
+    font-size: 25px;
+    margin-bottom: 20px;
+}
+
+.conduct-card ul {
+    list-style: none;
+}
+
+.conduct-card li {
+    padding: 12px 0;
+    border-bottom: 1px solid rgba(255,255,255,.05);
+    color: #9aa2a7;
+    font-size: 13px;
+}
+
+.conduct-card li::before {
+    content: "—";
+    margin-right: 10px;
+    color: #666;
+}
+
+/* FOOTER */
+
+footer {
+    padding: 70px 7% 30px;
+    border-top: 1px solid var(--border);
+    text-align: center;
+}
+
+.footer-logo {
+    font-family: Rajdhani;
+    font-size: 40px;
+    letter-spacing: 8px;
+    font-weight: 700;
+}
+
+footer p {
+    color: #656d73;
+    font-size: 11px;
+    letter-spacing: 2px;
+    margin-top: 15px;
+}
+
+.footer-bottom {
+    margin-top: 40px;
+    color: #454b50;
+    font-size: 10px;
+}
+
+/* ANIMATION */
+
+.fade {
+    opacity: 0;
+    transform: translateY(25px);
+    transition: 1s ease;
+}
+
+.fade.show {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+.ops-nav {
+    color: #d8dde0 !important;
+    border: 1px solid rgba(255,255,255,.16);
+    padding: 8px 12px;
+    background: rgba(255,255,255,.035);
+}
+
+.ops-nav:hover {
+    background: #ffffff;
+    color: #080a0d !important;
+}
+
+/* MOBILE */
+
+@media(max-width: 900px) {
+    .nav-links {
+        display: none;
+    }
+
+    .mission,
+    .conduct {
+        grid-template-columns: 1fr;
+    }
+
+    .values {
+        grid-template-columns: repeat(2,1fr);
+    }
+
+    .command-grid,
+    .doctrine-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .status-bar {
+        grid-template-columns: 1fr;
+    }
+
+    .status-item {
+        border-right: none;
+        border-bottom: 1px solid var(--border);
+    }
+}
+
+@media(max-width: 600px) {
+    section {
+        padding: 80px 5%;
+    }
+
+    .values {
+        grid-template-columns: 1fr;
+    }
+
+    .hero h1 {
+        font-size: 75px;
+        letter-spacing: 4px;
+    }
+
+    .mission-box {
+        padding: 25px;
+    }
+}
+</style>
+</head>
+
+<body>
+
+<!-- NAVIGATION -->
+<nav>
+    <div class="logo">
+        <div class="logo-mark"><span>STF</span></div>
+        SPECIAL TASK FORCE
+    </div>
+
+    <ul class="nav-links">
+        <li><a href="#home">Home</a></li>
+        <li><a href="#mission">Mission</a></li>
+        <li><a href="#values">Values</a></li>
+        <li><a href="#command">Command</a></li>
+        <li><a href="active-operations.html" class="ops-nav">Active Operations</a></li>
+    </ul>
+</nav>
+
+
+<!-- HERO -->
+<header class="hero" id="home">
+    <div class="hero-content fade">
+
+        <div class="eyebrow">UNITY REJECTS GOVERNMENT • SPECIAL OPERATIONS</div>
+
+        <h1>STF<span>.</span></h1>
+
+        <div class="hero-subtitle">
+            Special Task Force
+        </div>
+
+        <div class="hero-buttons">
+            <a href="#mission" class="btn primary">Our Mission</a>
+            <a href="#command" class="btn">Command Structure</a>
+        </div>
+
+    </div>
+</header>
+
+
+<!-- STATUS BAR -->
+<div class="status-bar fade">
+
+    <div class="status-item">
+        <div class="status-label">Unit Status</div>
+        <div class="status-value active">● OPERATIONAL</div>
+    </div>
+
+    <div class="status-item">
+        <div class="status-label">Unit</div>
+        <div class="status-value">SPECIAL TASK FORCE</div>
+    </div>
+
+    <div class="status-item">
+        <div class="status-label">Standard</div>
+        <div class="status-value">DISCIPLINE • INTEGRITY • SERVICE</div>
+    </div>
+
+</div>
+
+
+<!-- MISSION -->
+<section id="mission">
+
+    <div class="section-heading fade">
+        <small>01 / Mission</small>
+        <h2>OUR MISSION</h2>
+    </div>
+
+    <div class="mission">
+
+        <div class="mission-text fade">
+
+            <p>
+                The Special Task Force exists to provide a highly disciplined,
+                professional and accountable response to situations requiring
+                specialised operational capability.
+            </p>
+
+            <p>
+                Every STF member represents more than themselves. Every action
+                reflects upon the unit, its leadership and the wider UNITY REJECTS
+                Government.
+            </p>
+
+            <p>
+                Our objective is simple: protect life, uphold the law,
+                maintain operational discipline and complete every assignment
+                with professionalism.
+            </p>
+
+        </div>
+
+        <div class="mission-box fade">
+
+            <h3>THE STF STANDARD</h3>
+
+            <p>
+                "We do not seek recognition. We seek results.
+                We do not act for ourselves. We act for those we serve.
+                We remain disciplined when others lose control."
+            </p>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+<!-- VALUES -->
+<section id="values">
+
+    <div class="section-heading fade">
+        <small>02 / Foundation</small>
+        <h2>MORALS & VALUES</h2>
+        <p>
+            The standards expected from every member of the Special Task Force.
+        </p>
+    </div>
+
+    <div class="values">
+
+        <div class="value-card fade">
+            <div class="value-number">01</div>
+            <h3>INTEGRITY</h3>
+            <p>
+                Do what is right even when nobody is watching.
+                Honesty and trust are fundamental to the unit.
+            </p>
+        </div>
+
+        <div class="value-card fade">
+            <div class="value-number">02</div>
+            <h3>DISCIPLINE</h3>
+            <p>
+                Follow lawful orders, maintain composure and operate
+                according to established standards.
+            </p>
+        </div>
+
+        <div class="value-card fade">
+            <div class="value-number">03</div>
+            <h3>COURAGE</h3>
+            <p>
+                Face difficult situations with determination while
+                maintaining sound judgement.
+            </p>
+        </div>
+
+        <div class="value-card fade">
+            <div class="value-number">04</div>
+            <h3>ACCOUNTABILITY</h3>
+            <p>
+                Every member is responsible for their decisions,
+                conduct and actions.
+            </p>
+        </div>
+
+        <div class="value-card fade">
+            <div class="value-number">05</div>
+            <h3>RESPECT</h3>
+            <p>
+                Treat colleagues, civilians and suspects with dignity
+                and professionalism.
+            </p>
+        </div>
+
+        <div class="value-card fade">
+            <div class="value-number">06</div>
+            <h3>TEAMWORK</h3>
+            <p>
+                No operator works alone. Communication, coordination
+                and trust are essential.
+            </p>
+        </div>
+
+        <div class="value-card fade">
+            <div class="value-number">07</div>
+            <h3>PROFESSIONALISM</h3>
+            <p>
+                Maintain the highest standard of behaviour,
+                appearance and operational conduct.
+            </p>
+        </div>
+
+        <div class="value-card fade">
+            <div class="value-number">08</div>
+            <h3>RESTRAINT</h3>
+            <p>
+                Authority must be exercised responsibly, proportionately
+                and only when necessary.
+            </p>
+        </div>
+
+    </div>
+
+</section>
+
+
+<!-- COMMAND -->
+<section id="command">
+
+    <div class="section-heading fade">
+        <small>03 / Leadership</small>
+        <h2>STF COMMAND</h2>
+        <p>
+            The chain of command provides accountability, direction and
+            operational consistency.
+        </p>
+    </div>
+
+    <div class="command-grid">
+
+        <div class="person-card fade">
+            <div class="rank">STF COMMANDER</div>
+            <h3>DARIO CLAW</h3>
+            <div class="callsign"><b>CA-1</b></div>
+            <div class="assignment"><b>Unit Command • Strategic Leadership</b></div>
+        </div>
+
+        <div class="person-card fade">
+            <div class="rank">STF Member</div>
+            <h3>BARRY BOSTICK</h3>
+            <div class="callsign"><b>C-1</b></div>
+        </div>
+
+        <div class="person-card fade">
+            <div class="rank">STF Member</div>
+            <h3>TYLER BISHOP</h3>
+            <div class="callsign"><b>C-2</b></div>
+        </div>
+
+        <div class="person-card fade">
+            <div class="rank">STF Member</div>
+            <h3>VACANT</h3>
+            <div class="callsign"><b>C-3</b></div>
+        </div>
+
+        <div class="person-card fade">
+            <div class="rank">STF Member</div>
+            <h3>VACANT</h3>
+            <div class="callsign"><b>C-4</b></div>
+        </div>
+
+        <div class="person-card fade">
+            <div class="rank">STF Member</div>
+            <h3>VACANT</h3>
+            <div class="callsign"><b>C-5</b></div>
+        </div>
+
+    </div>
+
+</section>
+
+
+<!-- DOCTRINE -->
+<section>
+
+    <div class="section-heading fade">
+        <small>05 / Doctrine</small>
+        <h2>STF DOCTRINE</h2>
+    </div>
+
+    <div class="doctrine-grid">
+
+        <div class="doctrine-card fade">
+            <span>01</span>
+            <h3>CHAIN OF COMMAND</h3>
+            <p>
+                Every operator understands who they report to and who
+                holds operational authority.
+            </p>
+        </div>
+
+        <div class="doctrine-card fade">
+            <span>02</span>
+            <h3>COMMUNICATION</h3>
+            <p>
+                Clear, concise and professional communication is required
+                before, during and after operations.
+            </p>
+        </div>
+
+        <div class="doctrine-card fade">
+            <span>03</span>
+            <h3>OPERATIONAL CONTROL</h3>
+            <p>
+                Operators maintain awareness, follow briefings and
+                avoid unnecessary escalation.
+            </p>
+        </div>
+
+        <div class="doctrine-card fade">
+            <span>04</span>
+            <h3>PROFESSIONAL CONDUCT</h3>
+            <p>
+                STF personnel remain professional while representing the
+                unit both on and off duty.
+            </p>
+        </div>
+
+        <div class="doctrine-card fade">
+            <span>05</span>
+            <h3>ACCOUNTABILITY</h3>
+            <p>
+                Operational decisions are documented and members may be
+                required to explain their actions.
+            </p>
+        </div>
+
+        <div class="doctrine-card fade">
+            <span>06</span>
+            <h3>MISSION FIRST</h3>
+            <p>
+                Personal ego never takes priority over the safety,
+                objectives and reputation of the unit.
+            </p>
+        </div>
+
+    </div>
+
+</section>
+
+<!-- CODE OF CONDUCT -->
+<section>
+
+    <div class="section-heading fade">
+        <small>07 / Standards</small>
+        <h2>CODE OF CONDUCT</h2>
+    </div>
+
+    <div class="conduct">
+
+        <div class="conduct-card fade">
+
+            <h3>EVERY STF MEMBER SHALL</h3>
+
+            <ul>
+                <li>Follow the chain of command.</li>
+                <li>Remain professional while on duty.</li>
+                <li>Follow lawful orders.</li>
+                <li>Communicate clearly with other units.</li>
+                <li>Protect the reputation of the STF.</li>
+                <li>Respect civilians and fellow officers.</li>
+                <li>Accept responsibility for their actions.</li>
+                <li>Report serious misconduct through command.</li>
+            </ul>
+
+        </div>
+
+        <div class="conduct-card fade">
+
+            <h3>ZERO-TOLERANCE CONDUCT</h3>
+
+            <ul>
+                <li>Abuse of STF authority.</li>
+                <li>Deliberate corruption or dishonesty.</li>
+                <li>Unauthorised disclosure of operational information.</li>
+                <li>Disrespect toward command or colleagues.</li>
+                <li>Reckless behaviour that endangers others.</li>
+                <li>Using STF status for personal benefit.</li>
+                <li>Ignoring legitimate command instructions.</li>
+                <li>Conduct that damages the unit's reputation.</li>
+            </ul>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+<!-- OPERATIONS -->
+<section>
+
+    <div class="section-heading fade">
+        <small>08 / Operations</small>
+        <h2>OPERATIONAL READINESS</h2>
+    </div>
+
+    <div class="mission">
+
+        <div class="mission-box fade">
+
+            <h3>BEFORE DEPLOYMENT</h3>
+
+            <p>
+                Every operation should begin with a clear objective,
+                briefing, assignment of responsibilities and confirmation
+                of the chain of command.
+            </p>
+
+        </div>
+
+        <div class="mission-box fade">
+
+            <h3>AFTER DEPLOYMENT</h3>
+
+            <p>
+                Operators complete a debrief, report significant events
+                and identify lessons that can improve future operations.
+            </p>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+<!-- FOOTER -->
+<footer>
+
+    <div class="footer-logo">STF</div>
+
+    <p>
+        SPECIAL TASK FORCE • UNITY REJECTS GOVERNMENT
+    </p>
+
+    <div class="footer-bottom">
+        INTERNAL COMMAND PORTAL • ESTABLISHED BY DARIO CLAW CA-1
+    </div>
+
+</footer>
+
+
+<script>
+
+const observer = new IntersectionObserver((entries) => {
+
+    entries.forEach(entry => {
+
+        if(entry.isIntersecting) {
+            entry.target.classList.add("show");
+        }
+
+    });
+
+}, {
+    threshold: 0.12
+});
+
+
+document.querySelectorAll(".fade").forEach(el => {
+    observer.observe(el);
+});
+
+
+/* ACTIVE NAVIGATION */
+
+const sections = document.querySelectorAll("section, header");
+const navLinks = document.querySelectorAll(".nav-links a");
+
+window.addEventListener("scroll", () => {
+
+    let current = "";
+
+    sections.forEach(section => {
+
+        const sectionTop = section.offsetTop;
+
+        if(pageYOffset >= sectionTop - 150) {
+            current = section.getAttribute("id");
+        }
+
+    });
+
+    navLinks.forEach(link => {
+
+        link.style.color = "";
+
+        if(link.getAttribute("href") === "#" + current) {
+            link.style.color = "#ffffff";
+        }
+
+    });
+
+});
+
+</script>
+
+</body>
+</html>
+```

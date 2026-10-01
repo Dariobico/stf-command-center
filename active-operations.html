@@ -1,0 +1,866 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>STF | Active Operations</title>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Rajdhani:wght@500;600;700&display=swap" rel="stylesheet">
+
+<style>
+:root {
+    --bg: #080a0d;
+    --panel: rgba(15,19,23,.94);
+    --panel2: #11161b;
+    --border: rgba(255,255,255,.08);
+    --text: #f2f4f5;
+    --muted: #8f989f;
+    --green: #69b982;
+    --amber: #c69b55;
+    --red: #b84a4a;
+    --blue: #6f9fc5;
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+html, body {
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+}
+
+body {
+    font-family: Inter, sans-serif;
+    color: var(--text);
+    background:
+        radial-gradient(circle at 70% 10%, rgba(255,255,255,.055), transparent 30%),
+        linear-gradient(135deg, #07090b, #0c1014 55%, #07090b);
+}
+
+body::before {
+    content: "";
+    position: fixed;
+    inset: 0;
+    pointer-events: none;
+    opacity: .025;
+    background-image:
+        linear-gradient(rgba(255,255,255,.4) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255,255,255,.4) 1px, transparent 1px);
+    background-size: 40px 40px;
+}
+
+.topbar {
+    height: 72px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 28px;
+    background: rgba(7,9,11,.92);
+    border-bottom: 1px solid var(--border);
+    position: relative;
+    z-index: 10;
+}
+
+.brand {
+    display: flex;
+    align-items: center;
+    gap: 13px;
+    font-family: Rajdhani, sans-serif;
+    font-weight: 700;
+    letter-spacing: 2px;
+}
+
+.logo-mark {
+    width: 38px;
+    height: 38px;
+    border: 1px solid #777;
+    display: grid;
+    place-items: center;
+    transform: rotate(45deg);
+}
+
+.logo-mark span {
+    transform: rotate(-45deg);
+    font-size: 12px;
+}
+
+.top-title {
+    color: #9da5aa;
+    font-size: 11px;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+}
+
+.back-btn {
+    color: #c7cdd1;
+    text-decoration: none;
+    border: 1px solid #454c52;
+    padding: 9px 14px;
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    transition: .2s;
+}
+
+.back-btn:hover {
+    background: #fff;
+    color: #080a0d;
+}
+
+.dashboard {
+    height: calc(100vh - 72px);
+    display: grid;
+    grid-template-columns: 320px 1fr;
+}
+
+.sidebar {
+    min-height: 0;
+    overflow: hidden;
+    border-right: 1px solid var(--border);
+    background: rgba(10,13,16,.88);
+    padding: 24px 18px;
+}
+
+.sidebar-heading {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 16px;
+}
+
+.sidebar-heading h1 {
+    font-family: Rajdhani, sans-serif;
+    font-size: 24px;
+    letter-spacing: 2px;
+}
+
+.count {
+    color: #d3d8db;
+    border: 1px solid #3e464d;
+    padding: 4px 8px;
+    font-size: 10px;
+    font-weight: 700;
+}
+
+.filters {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 7px;
+    margin-bottom: 15px;
+}
+
+.filter {
+    background: #11161b;
+    border: 1px solid var(--border);
+    color: #899198;
+    padding: 8px;
+    font-size: 9px;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    cursor: pointer;
+}
+
+.filter.active {
+    color: white;
+    border-color: #69727a;
+}
+
+.operation-list {
+    display: flex;
+    flex-direction: column;
+    gap: 9px;
+}
+
+.operation-card {
+    width: 100%;
+    text-align: left;
+    color: white;
+    background: linear-gradient(145deg,#12171c,#0d1115);
+    border: 1px solid var(--border);
+    padding: 15px;
+    cursor: pointer;
+    transition: .2s;
+}
+
+.operation-card:hover,
+.operation-card.selected {
+    border-color: #737c83;
+    background: linear-gradient(145deg,#171d22,#0f1418);
+}
+
+.op-top {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 10px;
+}
+
+.op-id {
+    color: #899197;
+    font-size: 9px;
+    letter-spacing: 2px;
+    font-weight: 700;
+}
+
+.status {
+    font-size: 8px;
+    letter-spacing: 1px;
+    font-weight: 800;
+    padding: 4px 6px;
+    border: 1px solid;
+}
+
+.status.active { color: var(--green); border-color: rgba(105,185,130,.3); }
+.status.monitoring { color: var(--amber); border-color: rgba(198,155,85,.3); }
+.status.priority { color: var(--red); border-color: rgba(184,74,74,.35); }
+
+.operation-card h2 {
+    font-family: Rajdhani, sans-serif;
+    font-size: 21px;
+    margin-top: 10px;
+    letter-spacing: .8px;
+}
+
+.op-meta {
+    color: #69737a;
+    font-size: 10px;
+    margin-top: 7px;
+}
+
+.main {
+    min-width: 0;
+    min-height: 0;
+    padding: 25px;
+    display: grid;
+    grid-template-rows: auto 1fr;
+    gap: 20px;
+}
+
+.page-heading {
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-between;
+    gap: 20px;
+}
+
+.kicker {
+    color: #7d858b;
+    font-size: 10px;
+    letter-spacing: 4px;
+    text-transform: uppercase;
+}
+
+.page-heading h2 {
+    font-family: Rajdhani, sans-serif;
+    font-size: 42px;
+    letter-spacing: 2px;
+    line-height: 1;
+    margin-top: 7px;
+}
+
+.live {
+    color: var(--green);
+    font-size: 10px;
+    letter-spacing: 1.5px;
+    font-weight: 700;
+}
+
+.detail {
+    min-height: 0;
+    display: grid;
+    grid-template-columns: 1.35fr .8fr;
+    gap: 18px;
+}
+
+.panel {
+    min-height: 0;
+    overflow: hidden;
+    background: var(--panel);
+    border: 1px solid var(--border);
+}
+
+.overview {
+    padding: 24px;
+    display: flex;
+    flex-direction: column;
+    min-height: 0;
+}
+
+.overview-head {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 20px;
+    padding-bottom: 20px;
+    border-bottom: 1px solid var(--border);
+}
+
+.overview-head h3 {
+    font-family: Rajdhani, sans-serif;
+    font-size: 31px;
+    letter-spacing: 1px;
+}
+
+.overview-head p {
+    color: var(--muted);
+    font-size: 11px;
+    margin-top: 6px;
+}
+
+.priority-box {
+    min-width: 100px;
+    text-align: right;
+}
+
+.priority-box span {
+    display: block;
+    color: #6f777d;
+    font-size: 8px;
+    letter-spacing: 2px;
+}
+
+.priority-box strong {
+    display: block;
+    margin-top: 5px;
+    font-size: 11px;
+}
+
+.info-grid {
+    display: grid;
+    grid-template-columns: repeat(3,1fr);
+    gap: 10px;
+    margin-top: 16px;
+}
+
+.info {
+    padding: 13px;
+    background: #10151a;
+    border: 1px solid rgba(255,255,255,.055);
+}
+
+.info label {
+    display: block;
+    color: #69737a;
+    font-size: 8px;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+}
+
+.info strong {
+    display: block;
+    color: #c9ced1;
+    font-size: 11px;
+    margin-top: 6px;
+}
+
+.detail-columns {
+    min-height: 0;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+    margin-top: 14px;
+}
+
+.subpanel {
+    min-height: 0;
+    overflow: hidden;
+    background: #0f1418;
+    border: 1px solid rgba(255,255,255,.055);
+    padding: 16px;
+}
+
+.subpanel h4 {
+    font-family: Rajdhani, sans-serif;
+    font-size: 18px;
+    letter-spacing: 1px;
+    margin-bottom: 12px;
+}
+
+.data-list {
+    list-style: none;
+}
+
+.data-list li {
+    border-top: 1px solid rgba(255,255,255,.05);
+    padding: 9px 0;
+    color: #9ca4a9;
+    font-size: 10px;
+}
+
+.data-list li:first-child {
+    border-top: 0;
+    padding-top: 0;
+}
+
+.data-list b {
+    color: #d0d5d8;
+}
+
+.side {
+    min-height: 0;
+    display: grid;
+    grid-template-rows: 1fr 1fr;
+    gap: 18px;
+}
+
+.evidence,
+.timeline {
+    padding: 20px;
+    min-height: 0;
+    overflow: hidden;
+}
+
+.panel-title {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 14px;
+}
+
+.panel-title h3 {
+    font-family: Rajdhani, sans-serif;
+    font-size: 21px;
+    letter-spacing: 1px;
+}
+
+.panel-title span {
+    color: #687178;
+    font-size: 9px;
+    letter-spacing: 1px;
+}
+
+.evidence-grid {
+    display: grid;
+    grid-template-columns: repeat(2,1fr);
+    gap: 9px;
+}
+
+.evidence-item {
+    height: 92px;
+    border: 1px solid rgba(255,255,255,.06);
+    background:
+        linear-gradient(135deg, rgba(255,255,255,.04), rgba(0,0,0,.35)),
+        #11161b;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    padding: 10px;
+}
+
+.evidence-item strong {
+    font-size: 10px;
+}
+
+.evidence-item span {
+    color: #6f787e;
+    font-size: 8px;
+    margin-top: 4px;
+}
+
+.timeline-list {
+    list-style: none;
+}
+
+.timeline-list li {
+    position: relative;
+    padding: 0 0 12px 15px;
+    margin-bottom: 10px;
+    border-left: 1px solid #3c444a;
+}
+
+.timeline-list li:last-child {
+    margin-bottom: 0;
+}
+
+.timeline-list li::before {
+    content: "";
+    position: absolute;
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: #858e94;
+    left: -4px;
+    top: 3px;
+}
+
+.timeline-list time {
+    color: #657077;
+    font-size: 8px;
+    letter-spacing: 1px;
+}
+
+.timeline-list p {
+    color: #aeb5b9;
+    font-size: 10px;
+    margin-top: 4px;
+    line-height: 1.4;
+}
+
+.empty {
+    color: #69737a;
+    font-size: 10px;
+    line-height: 1.6;
+    padding: 15px 0;
+}
+
+@media(max-width: 1000px) {
+    html, body { overflow: auto; }
+    .dashboard { height: auto; min-height: calc(100vh - 72px); grid-template-columns: 1fr; }
+    .sidebar { border-right: 0; border-bottom: 1px solid var(--border); }
+    .operation-list { display: grid; grid-template-columns: repeat(2,1fr); }
+    .detail { grid-template-columns: 1fr; }
+    .side { grid-template-columns: 1fr 1fr; grid-template-rows: 1fr; }
+}
+
+@media(max-width: 650px) {
+    .topbar { padding: 0 15px; }
+    .top-title { display: none; }
+    .main { padding: 16px; }
+    .operation-list, .detail-columns, .side, .info-grid { grid-template-columns: 1fr; }
+    .page-heading h2 { font-size: 32px; }
+}
+</style>
+</head>
+
+<body>
+
+<header class="topbar">
+    <div class="brand">
+        <div class="logo-mark"><span>STF</span></div>
+        <div>
+            SPECIAL TASK FORCE
+            <div class="top-title">Active Operations Command Desk</div>
+        </div>
+    </div>
+
+    <a href="STF_Command_Center.html" class="back-btn">← Command Portal</a>
+</header>
+
+<div class="dashboard">
+
+    <aside class="sidebar">
+        <div class="sidebar-heading">
+            <h1>OPERATIONS</h1>
+            <span class="count" id="operationCount">03 ACTIVE</span>
+        </div>
+
+        <div class="filters">
+            <button class="filter active" data-filter="all">All</button>
+            <button class="filter" data-filter="active">Active</button>
+            <button class="filter" data-filter="monitoring">Monitoring</button>
+            <button class="filter" data-filter="priority">Priority</button>
+        </div>
+
+        <div class="operation-list" id="operationList"></div>
+    </aside>
+
+    <main class="main">
+
+        <div class="page-heading">
+            <div>
+                <div class="kicker">STF / Operations Intelligence</div>
+                <h2>ACTIVE OPERATIONS</h2>
+            </div>
+            <div class="live">● LIVE COMMAND DESK</div>
+        </div>
+
+        <div class="detail">
+
+            <section class="panel overview">
+                <div class="overview-head">
+                    <div>
+                        <div class="kicker" id="detailId">OP-001</div>
+                        <h3 id="detailName">Operation Blackout</h3>
+                        <p id="detailObjective">Operation objective</p>
+                    </div>
+
+                    <div class="priority-box">
+                        <span>STATUS</span>
+                        <strong id="detailStatus">ACTIVE</strong>
+                    </div>
+                </div>
+
+                <div class="info-grid">
+                    <div class="info">
+                        <label>Lead Unit</label>
+                        <strong id="detailLead">CA-1</strong>
+                    </div>
+                    <div class="info">
+                        <label>Location</label>
+                        <strong id="detailLocation">—</strong>
+                    </div>
+                    <div class="info">
+                        <label>Opened</label>
+                        <strong id="detailOpened">—</strong>
+                    </div>
+                </div>
+
+                <div class="detail-columns">
+
+                    <div class="subpanel">
+                        <h4>PERSONS OF INTEREST</h4>
+                        <ul class="data-list" id="peopleList"></ul>
+                    </div>
+
+                    <div class="subpanel">
+                        <h4>INVOLVED PERSONNEL</h4>
+                        <ul class="data-list" id="personnelList"></ul>
+                    </div>
+
+                    <div class="subpanel">
+                        <h4>LOCATIONS</h4>
+                        <ul class="data-list" id="locationsList"></ul>
+                    </div>
+
+                    <div class="subpanel">
+                        <h4>OPERATION NOTES</h4>
+                        <ul class="data-list" id="notesList"></ul>
+                    </div>
+
+                </div>
+            </section>
+
+            <aside class="side">
+
+                <section class="panel evidence">
+                    <div class="panel-title">
+                        <h3>EVIDENCE</h3>
+                        <span id="evidenceCount">0 ITEMS</span>
+                    </div>
+
+                    <div class="evidence-grid" id="evidenceGrid"></div>
+                </section>
+
+                <section class="panel timeline">
+                    <div class="panel-title">
+                        <h3>OPERATION LOG</h3>
+                        <span>RECENT EVENTS</span>
+                    </div>
+
+                    <ul class="timeline-list" id="timelineList"></ul>
+                </section>
+
+            </aside>
+
+        </div>
+    </main>
+</div>
+
+<script>
+/*
+    STF OPERATION DATABASE
+
+    Replace the example information below with your actual RP operations.
+    Each operation can contain:
+    - people
+    - STF personnel
+    - locations
+    - evidence
+    - notes
+    - timeline events
+*/
+
+const operations = [
+    {
+        id: "OP-001",
+        name: "Operation Blackout",
+        objective: "Active investigation requiring STF command oversight.",
+        status: "active",
+        lead: "CA-1",
+        location: "Postal 706",
+        opened: "01 OCT 2026 • 09:40",
+        people: [
+            "<b>Subject 01:</b> Identity pending",
+            "<b>Subject 02:</b> Identity pending",
+            "<b>Status:</b> Persons of interest"
+        ],
+        personnel: [
+            "<b>CA-1</b> — Dario Claw",
+            "<b>C-1</b> — Barry Bostick",
+            "<b>C-2</b> — Tyler Bishop"
+        ],
+        locations: [
+            "<b>Primary:</b> Postal 706",
+            "<b>Secondary:</b> Pending",
+            "<b>Evidence:</b> Scene to be secured"
+        ],
+        notes: [
+            "<b>Priority:</b> Maintain command oversight",
+            "<b>Briefing:</b> Required before deployment",
+            "<b>Access:</b> STF personnel only"
+        ],
+        evidence: [
+            ["E-001", "Scene Photograph"],
+            ["E-002", "Recovered Item"],
+            ["E-003", "Vehicle Record"],
+            ["E-004", "Witness Statement"]
+        ],
+        timeline: [
+            ["09:40", "Operation opened by CA-1."],
+            ["09:46", "Initial information logged."],
+            ["10:05", "Personnel assigned to operation."],
+            ["10:20", "Investigation remains active."]
+        ]
+    },
+
+    {
+        id: "OP-002",
+        name: "Operation Watchtower",
+        objective: "Monitoring operation concerning an ongoing investigation.",
+        status: "monitoring",
+        lead: "C-1",
+        location: "Postal 649",
+        opened: "30 SEP 2026 • 21:15",
+        people: [
+            "<b>Subject 01:</b> Identity pending",
+            "<b>Subject 02:</b> Under review",
+            "<b>Status:</b> Monitoring"
+        ],
+        personnel: [
+            "<b>C-1</b> — Barry Bostick",
+            "<b>C-2</b> — Tyler Bishop"
+        ],
+        locations: [
+            "<b>Primary:</b> Postal 649",
+            "<b>Secondary:</b> Pending",
+            "<b>Scene:</b> Under monitoring"
+        ],
+        notes: [
+            "<b>Status:</b> Intelligence gathering",
+            "<b>Deployment:</b> On command approval",
+            "<b>Review:</b> Pending"
+        ],
+        evidence: [
+            ["E-101", "Photographic Record"],
+            ["E-102", "Vehicle Information"],
+            ["E-103", "Statement"]
+        ],
+        timeline: [
+            ["21:15", "Operation opened."],
+            ["21:32", "Initial information received."],
+            ["22:10", "Monitoring status established."]
+        ]
+    },
+
+    {
+        id: "OP-003",
+        name: "Operation Iron Gate",
+        objective: "Priority investigation requiring STF command coordination.",
+        status: "priority",
+        lead: "CA-1",
+        location: "Restricted",
+        opened: "01 OCT 2026 • 08:10",
+        people: [
+            "<b>Subject 01:</b> Restricted",
+            "<b>Status:</b> Priority person of interest",
+            "<b>Information:</b> Command restricted"
+        ],
+        personnel: [
+            "<b>CA-1</b> — Dario Claw",
+            "<b>C-1</b> — Barry Bostick"
+        ],
+        locations: [
+            "<b>Primary:</b> Restricted",
+            "<b>Secondary:</b> Restricted",
+            "<b>Access:</b> Command authorisation required"
+        ],
+        notes: [
+            "<b>Priority:</b> HIGH",
+            "<b>Briefing:</b> Mandatory",
+            "<b>Disclosure:</b> Command controlled"
+        ],
+        evidence: [
+            ["E-201", "Restricted File"],
+            ["E-202", "Digital Record"],
+            ["E-203", "Scene Photograph"],
+            ["E-204", "Property Record"]
+        ],
+        timeline: [
+            ["08:10", "Priority operation opened."],
+            ["08:18", "Command notified."],
+            ["08:31", "Personnel assigned."],
+            ["08:55", "Awaiting further development."]
+        ]
+    }
+];
+
+const list = document.getElementById("operationList");
+const count = document.getElementById("operationCount");
+let selectedOperation = operations[0];
+
+function renderOperations(filter = "all") {
+    const filtered = operations.filter(op => filter === "all" || op.status === filter);
+
+    list.innerHTML = filtered.map(op => `
+        <button class="operation-card ${selectedOperation.id === op.id ? "selected" : ""}" onclick="selectOperation('${op.id}')">
+            <div class="op-top">
+                <span class="op-id">${op.id}</span>
+                <span class="status ${op.status}">${op.status.toUpperCase()}</span>
+            </div>
+            <h2>${op.name}</h2>
+            <div class="op-meta">${op.location} • Lead ${op.lead}</div>
+        </button>
+    `).join("");
+
+    const activeCount = operations.filter(op => op.status === "active").length;
+    count.textContent = `${activeCount.toString().padStart(2,"0")} ACTIVE`;
+}
+
+function fillList(id, items) {
+    document.getElementById(id).innerHTML = items.map(item => `<li>${item}</li>`).join("");
+}
+
+function selectOperation(id) {
+    selectedOperation = operations.find(op => op.id === id) || operations[0];
+
+    document.getElementById("detailId").textContent = selectedOperation.id;
+    document.getElementById("detailName").textContent = selectedOperation.name;
+    document.getElementById("detailObjective").textContent = selectedOperation.objective;
+    document.getElementById("detailStatus").textContent = selectedOperation.status.toUpperCase();
+    document.getElementById("detailLead").textContent = selectedOperation.lead;
+    document.getElementById("detailLocation").textContent = selectedOperation.location;
+    document.getElementById("detailOpened").textContent = selectedOperation.opened;
+
+    fillList("peopleList", selectedOperation.people);
+    fillList("personnelList", selectedOperation.personnel);
+    fillList("locationsList", selectedOperation.locations);
+    fillList("notesList", selectedOperation.notes);
+
+    document.getElementById("evidenceCount").textContent =
+        `${selectedOperation.evidence.length.toString().padStart(2,"0")} ITEMS`;
+
+    document.getElementById("evidenceGrid").innerHTML =
+        selectedOperation.evidence.map(e => `
+            <div class="evidence-item">
+                <strong>${e[0]}</strong>
+                <span>${e[1]}</span>
+            </div>
+        `).join("");
+
+    document.getElementById("timelineList").innerHTML =
+        selectedOperation.timeline.map(e => `
+            <li>
+                <time>${e[0]}</time>
+                <p>${e[1]}</p>
+            </li>
+        `).join("");
+
+    renderOperations(document.querySelector(".filter.active").dataset.filter);
+}
+
+document.querySelectorAll(".filter").forEach(button => {
+    button.addEventListener("click", () => {
+        document.querySelectorAll(".filter").forEach(b => b.classList.remove("active"));
+        button.classList.add("active");
+        renderOperations(button.dataset.filter);
+    });
+});
+
+selectOperation(selectedOperation.id);
+</script>
+
+</body>
+</html>
